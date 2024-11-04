@@ -1,5 +1,6 @@
 # OSAKA
 Outil de Sécurité des Architectures Kubernetes Avancées
+
 Advanced Kubernetes Architecture Security Tool
 
 This tool allows to perform the reconstruction of complex attack paths by graph generation in a Kubernetes cluster. It uses Neo4j for the
@@ -21,8 +22,8 @@ The tool was not designed in a secure development model, it is necessary to depl
 
 ## Installation
 Configure the environment variables in the. env file at project root but also at sources/. env :
-*HOST_IP* is the host system IP address
-*NEO4J_PASSWORD* is the database password
+- *HOST_IP* is the host system IP address
+- *NEO4J_PASSWORD* is the database password
 
 ### Build and run
 ```sh
