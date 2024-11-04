@@ -1,0 +1,77 @@
+services:
+  volume-perm-job:
+    image: alpine
+    user: "root"
+    group_add:
+      - 1001
+    volumes:
+      - /opt/db:/opt/db
+    command: chown -R 1001:1001 /opt/db
+    networks:
+      net:
+  database:
+    image: neo4j:5.24.2
+    ports:
+    - 7474:7474
+    - 7687:7687
+    - 7473:7473
+    volumes:
+    - "/opt/db:/data"
+    user: 1001:1001
+    environment:
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD}
+    networks:
+      net:
+        ipv4_address: 172.18.0.20
+    restart: always
+  editor:
+    image: neo4jlabs/neodash:2.4.8
+    ports:
+      - 8081:5005
+    networks:
+      net:
+        ipv4_address: 172.18.0.21
+    restart: always
+  loader:
+    image: pythonloader
+    build:
+      context: sources
+      dockerfile: ../build/loader/Dockerfile
+    ports:
+      - 8080:5000
+    networks:
+      net:
+        ipv4_address: 172.18.0.22
+    restart: always
+  visualizer:
+    image: visualizer
+    build:
+      context: build/neodash
+      dockerfile: Dockerfile
+    ports:
+      - 8082:5005
+    environment:
+      - standalone=true
+      - standaloneProtocol=neo4j
+      - standaloneHost=${HOST_IP}
+      - standalonePort=7687
+      - standaloneDatabase=neo4j
+      - standaloneUsername=neo4j
+      - standalonePassword=${NEO4J_PASSWORD}
+      - standaloneDashboardName=Dashboard
+      - standaloneDashboardDatabase=neo4j
+    networks:
+      net:
+        ipv4_address: 172.18.0.23
+    restart: always
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.0.0/24

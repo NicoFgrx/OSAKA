@@ -1,0 +1,12 @@
+# Non distroless image
+
+FROM python:3.12.6
+RUN groupadd -g 1001 python \
+   && useradd --uid 1001 --gid python --shell /bin/bash --create-home python
+
+WORKDIR /loader
+ADD . .
+RUN chown -R python:python /loader
+USER 1001
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "app.py"]

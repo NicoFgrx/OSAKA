@@ -1,0 +1,50 @@
+/*
+ *
+ */
+/* XXX TODO Download and import */
+
+header.main {
+    align-items    : center;
+    color          : #fff;
+    display        : flex;
+    justify-content: center;
+    margin-bottom  : 30px;
+    min-height     : 280px;
+    text-align     : center;
+}
+header.main .subtitle {
+    color: #0e84c4;
+    font-size: 16px;
+    font-weight: 400;
+}
+header.main .title {
+    color: #fff;
+}
+/* XXX TODO Mixin transition */
+.card {
+    border       : 1px solid #D8DDE6;
+    margin-bottom: 5px;
+    margin-right : 5px;
+    min-height   : 210px;
+    padding      : 20px;
+    text-align   : center;
+    transition   : all 150ms ease-in-out;
+}
+/* XXX TODO Mixin box-shadow */
+.card:hover, .card:focus {
+    border    : 1px solid #09537B;
+    box-shadow: 0 1px 4px rgba(123,86,159,0.4);
+    cursor    : pointer;
+    transition: all 150ms ease-in-out;
+}
+.card a {
+    text-decoration: none;
+}
+.card .card-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin   : 10px 0;
+}
+.card .card-body {
+    font-size: 12px;
+}

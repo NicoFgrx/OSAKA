@@ -1,0 +1,1561 @@
+{
+  "title": "Dashboard",
+  "version": "2.4",
+  "settings": {
+    "pagenumber": 0,
+    "editable": true,
+    "fullscreenEnabled": false,
+    "parameters": {},
+    "theme": "light"
+  },
+  "pages": [
+    {
+      "title": "Shortest Paths",
+      "reports": [
+        {
+          "id": "738ad82a-d781-4b0b-8dd0-6e3a0ef7d35b",
+          "title": "Shortest paths from vulns pods",
+          "query": "MATCH path=shortestPath((p:Pods)-[*1..]->(c:ClusterAdmins)) \nRETURN path",
+          "width": 6,
+          "height": 4,
+          "x": 0,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "Pods": "Name",
+            "Secrets": "Name",
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Nodes": "Name",
+            "RoleBindings": "Name"
+          },
+          "settings": {
+            "allowDownload": true,
+            "refreshButtonEnabled": true,
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": false,
+            "enableEditing": true,
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.uid",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "Services.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "pink"
+              }
+            ],
+            "layout": "force-directed"
+          },
+          "schema": [
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name",
+              "hostPaths",
+              "Caps"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "ServiceAccountName",
+              "Data",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "subject_kind",
+              "risky_roles",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ]
+          ]
+        },
+        {
+          "id": "29320a8d-1a7b-4568-9a03-ffde692edbbb",
+          "title": "Shortest paths to CA with priv SA",
+          "query": "MATCH (x:ClusterRoleBindings|Nodes)-[:ReadKubeConfig|MemberOf|BindClusterRole*..1]-(c:ClusterAdmins)\nMATCH path1=allShortestPaths((x)-[*..1]->(c:ClusterAdmins))\nMATCH path3=shortestPath((p:Pods)-[*1..]->(x))\nWHERE NOT (p)-[:EscapeTo]->()  \nAND NOT p.Name CONTAINS 'cert-manager'\nRETURN path1,path3\nLIMIT 80",
+          "width": 6,
+          "height": 4,
+          "x": 12,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Pods": "Name",
+            "Secrets": "Name",
+            "RoleBindings": "Name",
+            "Nodes": "Name"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "refreshButtonEnabled": true,
+            "allowDownload": true,
+            "frozen": false,
+            "nodePositions": {},
+            "layout": "force-directed",
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "",
+                "condition": "=",
+                "value": "",
+                "customization": "node color",
+                "customizationValue": "black"
+              }
+            ]
+          },
+          "schema": [
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "Data",
+              "ServiceAccountName",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "subject_kind",
+              "risky_roles",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ]
+          ]
+        },
+        {
+          "id": "9531687c-d4ea-4d79-9256-fff75a323180",
+          "title": "Paths from privileged SA with ClusterRoleBindings",
+          "query": "MATCH path1=allShortestPaths((crb:ClusterRoleBindings)-[*..1]->(c:ClusterAdmins))\nMATCH path2=allShortestPaths((s:Secrets)-[*1..]->(crb))\nRETURN path1,path2\nLIMIT 100",
+          "width": 6,
+          "height": 4,
+          "x": 18,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Secrets": "Name",
+            "RoleBindings": "Name",
+            "Nodes": "Name",
+            "Pods": "Name"
+          },
+          "settings": {
+            "refreshButtonEnabled": true,
+            "fullscreenEnabled": true,
+            "styleRules": [
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "",
+                "condition": "=",
+                "value": "",
+                "customization": "node color",
+                "customizationValue": "black"
+              }
+            ]
+          },
+          "schema": [
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "Data",
+              "ServiceAccountName",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "subject_kind",
+              "risky_roles",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name"
+            ]
+          ]
+        },
+        {
+          "id": "14c91ea9-dc75-4bba-8ed0-435d3f81745f",
+          "title": "Shortest paths to CA with priv pods",
+          "query": "MATCH (n:Nodes WHERE n.Type = \"worker\")\nMATCH (x:ClusterRoleBindings|Nodes)-[:ReadKubeConfig|MemberOf|BindClusterRole*..1]-(c:ClusterAdmins)\nMATCH path1=allShortestPaths((x)-[*..1]->(c:ClusterAdmins))\nMATCH path3=shortestPath((n:Nodes)-[*1..]->(x))\nMATCH path4=shortestPath((p:Pods)-[*1..]->(n))\nWHERE (p:Pods)-[:EscapeTo]->(n)\nAND p.nodeName IN n.Name\nRETURN path1,path3,path4",
+          "width": 6,
+          "height": 4,
+          "x": 6,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Nodes": "Name",
+            "Secrets": "Name",
+            "Pods": "Name",
+            "RoleBindings": "Name"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "refreshButtonEnabled": true,
+            "columnWidthsType": "Relative (%)",
+            "columnWidths": "4",
+            "nodeColorScheme": "neodash",
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "",
+                "condition": "=",
+                "value": "",
+                "customization": "node color",
+                "customizationValue": "black"
+              }
+            ]
+          },
+          "schema": [
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "Data",
+              "ServiceAccountName",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name",
+              "hostPaths",
+              "Caps"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "subject_kind",
+              "risky_roles",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ]
+          ]
+        },
+        {
+          "id": "9d096b05-7177-48ce-a933-5a2a517bdf3a",
+          "title": "Shortest paths using CreatePods",
+          "query": "MATCH path1=allShortestPaths((crb:ClusterRoleBindings)-[*..1]->(c:ClusterAdmins))\nMATCH path2=shortestPath((n:Nodes)-[:Read|MemberOf*..2]->(crb))\nMATCH (rbacs:ClusterRoleBindings|RoleBindings)-[r:CanCreatePods]-(n)\nMATCH path3=shortestPath((p1:Pods)-[:AccessTo|MemberOf*..2]-(rbacs))\nWHERE n.Type = \"worker\"\nRETURN path1,path2,path3,r\nLIMIT 300",
+          "width": 6,
+          "height": 4,
+          "x": 0,
+          "y": 4,
+          "type": "graph",
+          "selection": {
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Nodes": "Name",
+            "Secrets": "Name",
+            "Pods": "Name",
+            "RoleBindings": "Name",
+            "CanCreatePods": "(label)"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "refreshButtonEnabled": true,
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              }
+            ],
+            "layout": "force-directed"
+          },
+          "schema": [
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "Data",
+              "ServiceAccountName",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name",
+              "Caps"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "subject_kind",
+              "risky_roles",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ],
+            [
+              "CanCreatePods"
+            ]
+          ]
+        },
+        {
+          "id": "c33be809-3d5e-465f-87d4-cab4b0cbd7cb",
+          "title": "Direct Paths to Cluster Admins",
+          "query": "MATCH path1=allShortestPaths((crb:ClusterRoleBindings)-[*..1]->(c:ClusterAdmins))\nMATCH path3=allShortestPaths((p:Pods)-[:AccessTo|MemberOf*1..]->(crb))\nWHERE NOT p.Name CONTAINS 'cert-manager'\nRETURN path1,path3",
+          "width": 6,
+          "height": 4,
+          "x": 6,
+          "y": 4,
+          "type": "graph",
+          "selection": {
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Pods": "Name",
+            "Secrets": "Name"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "refreshButtonEnabled": true,
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "",
+                "condition": "=",
+                "value": "",
+                "customization": "node color",
+                "customizationValue": "black"
+              }
+            ]
+          },
+          "schema": [
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name",
+              "hostPaths"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "ServiceAccountName",
+              "Data",
+              "Namespace",
+              "Name"
+            ]
+          ]
+        },
+        {
+          "id": "8ad9c195-75d2-4ba6-b78b-55a8362654b7",
+          "title": "Network Paths (LoadBalancer)",
+          "query": "MATCH path=allShortestPaths((s:Services)-[*1..]->(c:ClusterAdmins))\nWHERE s.Type = \"LoadBalancer\"\nRETURN path",
+          "width": 6,
+          "height": 4,
+          "x": 12,
+          "y": 4,
+          "type": "graph",
+          "selection": {
+            "Services": "Name",
+            "Pods": "Name",
+            "RoleBindings": "Name",
+            "Nodes": "Name",
+            "ClusterAdmins": "Name",
+	    "Secrets": "Name",
+	    "ClusterRoleBindings": "Name"
+          },
+          "settings": {
+            "allowDownload": true,
+            "refreshButtonEnabled": true,
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": false,
+            "enableEditing": true,
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.uid",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "Services.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "pink"
+              }
+            ],
+            "layout": "tree-left-right",
+            "graphDepthSep": 85,
+            "fixNodeAfterDrag": true
+          },
+          "schema": [
+            [
+              "Services",
+              "ClusterIP",
+              "Type",
+              "Ports",
+              "LoadBalancerIP",
+              "Namespace",
+              "Name",
+              "Selector"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "risky_roles",
+              "subject_kind",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ]
+          ]
+        },
+        {
+          "id": "73a3c48b-f6db-4e8e-be2d-e7208875f5db",
+          "title": "Network Paths (ClusterIP)",
+          "query": "MATCH path=shortestPath((s:Services)-[*1..]->(c:ClusterAdmins))\nWHERE s.Type = \"ClusterIP\"\nRETURN path",
+          "width": 6,
+          "height": 4,
+          "x": 18,
+          "y": 4,
+          "type": "graph",
+          "selection": {
+            "Services": "Name",
+            "Pods": "Name",
+            "Secrets": "Name",
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Nodes": "Name",
+            "RoleBindings": "Name"
+          },
+          "settings": {
+            "allowDownload": true,
+            "refreshButtonEnabled": true,
+            "fullscreenEnabled": true,
+            "downloadImageEnabled": false,
+            "enableEditing": true,
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.uid",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "Services.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "pink"
+              }
+            ],
+            "layout": "tree-left-right",
+            "graphDepthSep": 65
+          },
+          "schema": [
+            [
+              "Services",
+              "ClusterIP",
+              "Type",
+              "Ports",
+              "Namespace",
+              "Name",
+              "Selector"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name",
+              "Caps"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "ServiceAccountName",
+              "Data",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "risky_roles",
+              "subject_kind",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "All paths",
+      "reports": [
+        {
+          "id": "51fd8e2d-e169-48aa-978f-a59fc3d2ce53",
+          "title": "All paths to CA with priv SA",
+          "query": "MATCH path1=allShortestPaths((crb:ClusterRoleBindings)-[*..1]->(c:ClusterAdmins))\nMATCH path2=allShortestPaths((s:Secrets)-[*1..]->(crb))\nMATCH path3=allShortestPaths((p:Pods)-[*1..]->(s))\nWHERE (p)-[:AccessTo]-(s)\nAND NOT p.Name CONTAINS 'cert-manager'\nRETURN path1,path2,path3\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 6,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Secrets": "Name",
+            "RoleBindings": "Name",
+            "Nodes": "Name",
+            "Pods": "Name"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "styleRules": [
+              {
+                "field": "Pods.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "",
+                "condition": "=",
+                "value": "",
+                "customization": "node color",
+                "customizationValue": "black"
+              }
+            ]
+          },
+          "schema": [
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "Data",
+              "ServiceAccountName",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "risky_roles",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Caps",
+              "Namespace",
+              "Name",
+              "hostPaths"
+            ]
+          ]
+        },
+        {
+          "id": "64e2ecd8-80a2-4ffe-b412-12c3538cb90c",
+          "title": "All paths from vulnerable pods",
+          "query": "MATCH path=allShortestPaths((p:Pods)-[*1..]->(c:ClusterAdmins)) \nRETURN path\n\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 0,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "Pods": "Name",
+            "Secrets": "Name",
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Nodes": "Name",
+            "RoleBindings": "Name"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "styleRules": [
+              {
+                "field": "Pods.nodeName",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#047D61"
+              },
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "",
+                "condition": "=",
+                "value": "",
+                "customization": "node color",
+                "customizationValue": "black"
+              }
+            ]
+          },
+          "schema": [
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name",
+              "hostPaths",
+              "Caps"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "ServiceAccountName",
+              "Data",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "subject_kind",
+              "risky_roles",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ]
+          ]
+        },
+        {
+          "id": "e646d74a-4241-4fd1-b220-6353d5d3d936",
+          "title": "Paths from privileged SA with ClusterRoleBindings",
+          "query": "MATCH path1=allShortestPaths((crb:ClusterRoleBindings)-[*..1]->(c:ClusterAdmins))\nMATCH path2=allShortestPaths((s:Secrets)-[*1..]->(crb))\nRETURN path1, path2\nLIMIT 200\n\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 12,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "ClusterRoleBindings": "Name",
+            "ClusterAdmins": "Name",
+            "Secrets": "Name",
+            "RoleBindings": "Name",
+            "Nodes": "Name",
+            "Pods": "Name"
+          },
+          "settings": {
+            "fullscreenEnabled": true,
+            "styleRules": [
+              {
+                "field": "ClusterAdmins.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#C60A0A"
+              },
+              {
+                "field": "Secrets.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#0058F0"
+              },
+              {
+                "field": "ClusterRoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "RoleBindings.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#D18203"
+              },
+              {
+                "field": "Nodes.Name",
+                "condition": "!=",
+                "value": "k",
+                "customization": "node color",
+                "customizationValue": "#A19E9E"
+              },
+              {
+                "field": "",
+                "condition": "!=",
+                "value": "",
+                "customization": "node color",
+                "customizationValue": "black"
+              }
+            ]
+          },
+          "schema": [
+            [
+              "ClusterRoleBindings",
+              "uid",
+              "RoleRef_name",
+              "subject_kind",
+              "rbac",
+              "subject_name",
+              "RoleRef_kind",
+              "subject_namespace",
+              "Name",
+              "risky_roles",
+              "risky"
+            ],
+            [
+              "ClusterAdmins",
+              "Name"
+            ],
+            [
+              "Secrets",
+              "Type",
+              "Data",
+              "ServiceAccountName",
+              "Namespace",
+              "Name"
+            ],
+            [
+              "RoleBindings",
+              "uid",
+              "subject_kind",
+              "risky_roles",
+              "RoleRef_name",
+              "rbac",
+              "namespace",
+              "subject_name",
+              "RoleRef_kind",
+              "risky",
+              "subject_namespace",
+              "Name"
+            ],
+            [
+              "Nodes",
+              "Type",
+              "Name"
+            ],
+            [
+              "Pods",
+              "nodeName",
+              "Privileged",
+              "Images",
+              "Labels",
+              "serviceAccount",
+              "Namespace",
+              "Name"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Statistics",
+      "reports": [
+        {
+          "id": "9bda33ee-fbd7-4ccb-8207-5ad2acbeda58",
+          "title": "Privileged pods",
+          "query": "MATCH (p:Pods),(n:Nodes)\nWHERE p.Privileged = True \nAND p.nodeName = n.Name\nRETURN p.Name AS Pods, n.Name as Nodes\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 0,
+          "y": 0,
+          "type": "table",
+          "selection": {},
+          "settings": {},
+          "schema": []
+        },
+        {
+          "id": "ded47c3d-9c63-46ce-b597-f1357d43e596",
+          "title": "Number of privileged pods",
+          "query": "MATCH (p:Pods)\nRETURN count(p) as Pods, p.Privileged as Privileged",
+          "width": 6,
+          "height": 4,
+          "x": 6,
+          "y": 0,
+          "type": "pie",
+          "selection": {
+            "index": "Privileged",
+            "value": "Pods",
+            "key": "(none)"
+          },
+          "settings": {
+            "layout": "vertical",
+            "fullscreenEnabled": false,
+            "refreshButtonEnabled": true,
+            "groupMode": "stacked",
+            "textAlign": "center",
+            "verticalAlign": "middle",
+            "fontSize": 70,
+            "legend": true,
+            "enableArcLinkLabels": false
+          },
+          "schema": []
+        },
+        {
+          "id": "72467d71-0f94-45d9-8241-873832a52c24",
+          "title": "Direct Cluster Admins Members",
+          "query": "MATCH (crb:ClusterRoleBindings)-[r:MemberOf]-(c:ClusterAdmins)\nRETURN crb.Name AS ClusterRoleBindings\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 0,
+          "y": 4,
+          "type": "table",
+          "selection": {},
+          "settings": {},
+          "schema": []
+        },
+        {
+          "id": "806975a4-8fc5-4347-82c0-3a86c0dc016a",
+          "title": "Nested Cluster Admins Members",
+          "query": "MATCH (crb:ClusterRoleBindings)-[r:BindClusterRole]-(c:ClusterAdmins)\nRETURN crb.Name AS ClusterRoleBindings\n\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 6,
+          "y": 4,
+          "type": "table",
+          "selection": {},
+          "settings": {},
+          "schema": []
+        },
+        {
+          "id": "fd641f92-ee7f-4bc0-bd18-bd04381b71a6",
+          "title": "Worker nodes with most vuln pods",
+          "query": "MATCH(p:Pods)-[:EscapeTo]-(n:Nodes)\nRETURN n.Name as Nodes, count(p) AS Pods\nORDER BY Pods DESC\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 12,
+          "y": 4,
+          "type": "pie",
+          "selection": {
+            "index": "Nodes",
+            "value": "Pods",
+            "key": "(none)"
+          },
+          "settings": {},
+          "schema": []
+        },
+        {
+          "id": "fefe93a4-c2a6-4531-9330-0f9f7fdeb6b9",
+          "title": "Privileged SA",
+          "query": "MATCH (p:Pods),(crb:ClusterRoleBindings WHERE crb.risky = True),(rb:RoleBindings WHERE rb.risky = True)\nWHERE p.serviceAccount = crb.subject_name \nOR p.serviceAccount = rb.subject_name\nRETURN DISTINCT p.serviceAccount AS ServiceAccounts, p.Namespace AS Namespaces",
+          "width": 6,
+          "height": 4,
+          "x": 18,
+          "y": 0,
+          "type": "table",
+          "selection": {},
+          "settings": {},
+          "schema": []
+        },
+        {
+          "id": "84994531-67fd-4681-987a-ddba354adc65",
+          "title": "Number of privileged SA",
+          "query": "MATCH (p:Pods),(crb:ClusterRoleBindings WHERE crb.risky = True), (rb:RoleBindings WHERE rb.risky = True)\nWHERE p.serviceAccount = crb.subject_name \nOR p.serviceAccount = rb.subject_name\nRETURN count(DISTINCT p.serviceAccount)",
+          "width": 6,
+          "height": 4,
+          "x": 12,
+          "y": 0,
+          "type": "value",
+          "selection": {},
+          "settings": {
+            "verticalAlign": "middle",
+            "textAlign": "center",
+            "fontSize": 70
+          },
+          "schema": []
+        },
+        {
+          "id": "4eef4a05-f6b4-4fa5-bd9c-9e897d2e8825",
+          "title": "Pods with bad mounts",
+          "query": "MATCH (p:Pods),(n:Nodes)\nWHERE p.hostPaths \nAND p.nodeName = n.Name\nRETURN p.Name AS Pods, p.hostPaths AS Mounts, n.Name as Nodes\n\n\n\n",
+          "width": 6,
+          "height": 4,
+          "x": 18,
+          "y": 4,
+          "type": "table",
+          "selection": {},
+          "settings": {},
+          "schema": []
+        }
+      ]
+    }
+  ],
+  "parameters": {},
+  "extensions": {
+    "active": true,
+    "activeReducers": [],
+    "styling": {
+      "active": true
+    }
+  },
+  "uuid": "73c16812-14d4-4792-a0f4-259bf6311bb8"
+}

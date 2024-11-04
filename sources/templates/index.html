@@ -1,0 +1,69 @@
+{% assets "js_all" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %} {% assets "css_all" %}
+<link rel=stylesheet type="text/css" href="{{ ASSET_URL }}">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='application.css')}}"/>
+{% endassets %}
+
+
+<head>
+    <title>
+        Outil de chargement de configuration
+    </title>
+</head>
+
+{% block content %}
+
+<div class="alert alert-warning">
+  <div class="alert-items">
+    <div class="alert-item static" role="alert">
+      <div class="alert-icon-wrapper">
+        <clr-icon class="alert-icon" shape="exclamation-triangle"></clr-icon>
+      </div>
+      <span class="alert-text">Only files with *.zip extension are allowed</span>
+    </div>
+  </div>
+</div>
+
+{% if error %}
+<div class="alert alert-danger">
+  <div class="alert-items">
+    <div class="alert-item static" role="alert">
+      <div class="alert-icon-wrapper">
+        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+      </div>
+        <span class="alert-text">{{ error }}</span>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% if name %}
+<div class="alert alert-success" role="alert">
+  <div class="alert-items">
+    <div class="alert-item static">
+      <div class="alert-icon-wrapper">
+        <clr-icon class="alert-icon" shape="check-circle"></clr-icon>
+      </div>
+        <span class="alert-text">{{ name }} has been uploaded successfully</span>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div style="position:relative; left:5px;">
+<form method="POST" class="clr-form" enctype="multipart/form-data">
+    <h4 align="left">Chargement de la configuration du cluster K8S</h4>
+    <br>
+    <input type="file" name="file" class="clr-input" />
+    <input type="submit" class="btn btn-primary" value="Upload">
+
+</form>
+    <p><U><strong>Code couleurs des objets :</strong></U></p>
+    <br>
+    <span class="label label-danger">Cluster Admins</span>
+    <span class="label label-success">Pods</span>
+    <span class="label label-info">Secrets</span>
+    <span class="label label-warning">RBAC</span>
+    <span class="label label-gray">Nodes</span>
+
+</div>
+{% endblock %}
