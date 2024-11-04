@@ -1,4 +1,4 @@
-![OSAKA](./logo.jpeg)
+![OSAKA](./logo.jpeg | width=50)
 
 # OSAKA
 Outil de Sécurité des Architectures Kubernetes Avancées
