@@ -1,5 +1,3 @@
-![OSAKA](./logo.jpeg | width=50)
-
 # OSAKA
 Outil de Sécurité des Architectures Kubernetes Avancées
 Advanced Kubernetes Architecture Security Tool
