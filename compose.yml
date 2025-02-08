@@ -5,7 +5,7 @@ services:
     group_add:
       - 1001
     volumes:
-      - /opt/db:/opt/db
+      - db:/opt/db
     command: chown -R 1001:1001 /opt/db
     networks:
       net:
@@ -16,7 +16,7 @@ services:
     - 7687:7687
     - 7473:7473
     volumes:
-    - "/opt/db:/data"
+    - db:/data
     user: 1001:1001
     environment:
       - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD}
